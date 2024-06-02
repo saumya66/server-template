@@ -13,12 +13,16 @@ module.exports = {
       NODE_ENV: "production",
       PORT: 8080,
       exec_mode: "cluster_mode",
-      MONGODB_URI: "mongodb+srv://saumya:66044Mong!@cluster0.nr5ewec.mongodb.net/"
+      MONGODB_URI: "Add your mongo production db connection uri",
+      GOOGLE_CLIENT_ID:"Add your google client id",
+      GOOGLE_CLIENT_SECRET:"Add your google secret id",
     },
     env_development: {
       NODE_ENV: "development",
       PORT: 3001,
-      MONGODB_URI: "mongodb+srv://saumya:66044Mong!@cluster0.nr5ewec.mongodb.net/",
+      MONGODB_URI: "Add your mongo development db connection uri ",
+      GOOGLE_CLIENT_ID:"Add your google client id",
+      GOOGLE_CLIENT_SECRET:"Add your google secret id",
       watch: true,
       watch_delay: 2000,
       ignore_watch: [

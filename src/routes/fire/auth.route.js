@@ -4,44 +4,39 @@ const passport = require("passport");
 
 const authRoute = express.Router();
 
-const isLoggedIn = (req, res, next) => {
-    if (req.user) {
-    next();
+const isLoggedIn = (req, res, next) => { //checks if passport user is authenticated
+    if (req.isAuthenticated()) {
+        next();
     } else {
-    res.sendStatus(401);
+        res.sendStatus(401);
     }
-    }
+}
 
-authRoute.post('/signin', createUser);
+// authRoute.post('/signin', createUser); dummy test
 
-authRoute.get("/", (req, res) => {
-    res.json({message: "You are not logged in"})
+authRoute.get("/google/failure", (req, res) => {
+    res.send({status: "failed"})
 })
-
-authRoute.get("/failed", (req, res) => {
-    res.send("Failed")
-})
-authRoute.get("/success",isLoggedIn, (req, res) => {
-    res.send(`Welcome ${req.user.email}`)
+authRoute.get("/google/success", isLoggedIn, (req, res) => {
+    console.log(req.user)
+    res.send({user: req.user,status: "success"})
 })
 
 authRoute.get('/google',
     passport.authenticate('google', {
         scope:
-            ['email', 'profile']
+            ['email' ,'profile']
         }
 ));
 
 authRoute.get('/google/callback',
-    passport.authenticate('google', {
-        failureRedirect: '/failed',
-    }),
-    function (req, res) {
-        res.redirect('/success')
-    }
+    passport.authenticate( 'google', {
+        successRedirect: '/fire/auth/google/success',
+        failureRedirect: '/fire/auth/google/failure'
+    })
 );
 
-authRoute.get("/logout", (req, res) => {
+authRoute.get("/logout", (req, res) => { //clears all cookies thus logs user out
     req.session = null;
     req.logout();
     res.redirect('/');

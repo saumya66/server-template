@@ -35,15 +35,29 @@ app.use(morgan.errorHandler);
 
 app.use(compression());
 
+app.use(passport.initialize());
+app.use (passport.session())
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function(user, done) { //this adds the user to req.user so that it can be used thorought out the server
       done(null, user);
 });
 
 
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret:process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3001/fire/auth/google/callback",
+  passReqToCallback   : true
+},
+function(request, accessToken, refreshToken, profile, done) {
+      return done(null, profile);
+}
+ 
+));
+ 
 app.use('/', route)
 
 app.use((req, res, next) => {
@@ -59,3 +73,8 @@ connectDB();
 app.listen(port, () => {
   logger.info(`server is running on http://localhost:${port}`);
 });
+
+
+/**
+ * Good blog on setting up Passport
+ */
