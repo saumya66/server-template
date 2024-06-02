@@ -43,17 +43,6 @@ passport.deserializeUser(function(user, done) {
       done(null, user);
 });
 
-passport.use(new GoogleStrategy({
-      clientID:"737042041212-03c6c5q8iq5hdus4btcpelhkpd1qitpo.apps.googleusercontent.com",
-      clientSecret:"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",
-      callbackURL: "http://localhost:3001/google/callback",
-      passReqToCallback   : true
-  },
-  function(request, accessToken, refreshToken, profile, done) {
-          logger.info("FFFF", profile)
-          return done(null, profile);
-  }
-));
 
 app.use('/', route)
 
